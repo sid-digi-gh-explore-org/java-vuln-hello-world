@@ -3,8 +3,12 @@
  */
 package org.example;
 
+import org.apache.logging.log4j.core.impl.Log4jLogEvent;
+
 public class App {
     public String getGreeting() {
+        @SuppressWarnings("unused")
+        var logEvent = new Log4jLogEvent();
         return "Hello World!";
     }
 
