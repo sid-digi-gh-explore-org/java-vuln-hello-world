@@ -3,16 +3,72 @@
  */
 package org.example;
 
-import org.apache.logging.log4j.core.impl.Log4jLogEvent;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.util.Scanner;
 
 public class App {
-    public String getGreeting() {
-        @SuppressWarnings("unused")
-        var logEvent = new Log4jLogEvent();
-        return "Hello World!";
-    }
-
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+        Scanner scanner = new Scanner(System.in);
+
+        // Command Injection
+        System.out.print("Enter a command to execute: ");
+        String command = scanner.nextLine();
+        try {
+            Process process = Runtime.getRuntime().exec(command); // Vulnerable command injection
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Path Traversal
+        System.out.print("Enter a file path to read: ");
+        String filePath = scanner.nextLine();
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) { // Vulnerable path traversal
+            String line;
+            while ((line = br.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (IOException e) {
+            System.out.println("File not found or an error occurred.");
+        }
+
+        // Insecure Deserialization (if you were receiving serialized data via console
+        // input)
+        System.out.print("Enter serialized object (base64 encoded): ");
+        String serializedObject = scanner.nextLine();
+        if (serializedObject != null && !serializedObject.isEmpty()) {
+
+            try {
+                byte[] data = java.util.Base64.getDecoder().decode(serializedObject);
+                ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
+                Object obj = ois.readObject(); // Vulnerable to insecure deserialization
+                System.out.println("Deserialized object: " + obj);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        // Hardcoded Credentials (Example, reading from a file, but could be directly in
+        // the code)
+        try (BufferedReader br = new BufferedReader(new FileReader("credentials.txt"))) {
+            String username = br.readLine();
+            String password = br.readLine();
+            System.out.println("Username: " + username);
+            System.out.println("Password: " + password);
+            // ...use credentials...
+        } catch (IOException e) {
+            System.out.println("Credentials file not found or invalid.");
+        }
+
+        scanner.close();
     }
 }
