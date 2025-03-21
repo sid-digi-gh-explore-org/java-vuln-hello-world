@@ -4,11 +4,9 @@
 package org.example;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
 import java.util.Scanner;
 
 public class App {
@@ -41,33 +39,37 @@ public class App {
             System.out.println("File not found or an error occurred.");
         }
 
-        // Insecure Deserialization (if you were receiving serialized data via console
-        // input)
-        System.out.print("Enter serialized object (base64 encoded): ");
-        String serializedObject = scanner.nextLine();
-        if (serializedObject != null && !serializedObject.isEmpty()) {
+        // // Insecure Deserialization (if you were receiving serialized data via
+        // console
+        // // input)
+        // System.out.print("Enter serialized object (base64 encoded): ");
+        // String serializedObject = scanner.nextLine();
+        // if (serializedObject != null && !serializedObject.isEmpty()) {
 
-            try {
-                byte[] data = java.util.Base64.getDecoder().decode(serializedObject);
-                ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
-                Object obj = ois.readObject(); // Vulnerable to insecure deserialization
-                System.out.println("Deserialized object: " + obj);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        // try {
+        // byte[] data = java.util.Base64.getDecoder().decode(serializedObject);
+        // ObjectInputStream ois = new ObjectInputStream(new
+        // ByteArrayInputStream(data));
+        // Object obj = ois.readObject(); // Vulnerable to insecure deserialization
+        // System.out.println("Deserialized object: " + obj);
+        // } catch (Exception e) {
+        // e.printStackTrace();
+        // }
+        // }
 
-        // Hardcoded Credentials (Example, reading from a file, but could be directly in
-        // the code)
-        try (BufferedReader br = new BufferedReader(new FileReader("credentials.txt"))) {
-            String username = br.readLine();
-            String password = br.readLine();
-            System.out.println("Username: " + username);
-            System.out.println("Password: " + password);
-            // ...use credentials...
-        } catch (IOException e) {
-            System.out.println("Credentials file not found or invalid.");
-        }
+        // // Hardcoded Credentials (Example, reading from a file, but could be directly
+        // in
+        // // the code)
+        // try (BufferedReader br = new BufferedReader(new
+        // FileReader("credentials.txt"))) {
+        // String username = br.readLine();
+        // String password = br.readLine();
+        // System.out.println("Username: " + username);
+        // System.out.println("Password: " + password);
+        // // ...use credentials...
+        // } catch (IOException e) {
+        // System.out.println("Credentials file not found or invalid.");
+        // }
 
         scanner.close();
     }
