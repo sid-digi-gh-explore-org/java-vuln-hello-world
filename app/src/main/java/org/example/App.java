@@ -57,17 +57,19 @@ public class App {
             }
         }
 
-        // Hardcoded Credentials (Example, reading from a file, but could be directly in
-        // the code)
-        try (BufferedReader br = new BufferedReader(new FileReader("credentials.txt"))) {
-            String username = br.readLine();
-            String password = br.readLine();
-            System.out.println("Username: " + username);
-            System.out.println("Password: " + password);
-            // ...use credentials...
-        } catch (IOException e) {
-            System.out.println("Credentials file not found or invalid.");
-        }
+        // // Hardcoded Credentials (Example, reading from a file, but could be directly
+        // in
+        // // the code)
+        // try (BufferedReader br = new BufferedReader(new
+        // FileReader("credentials.txt"))) {
+        // String username = br.readLine();
+        // String password = br.readLine();
+        // System.out.println("Username: " + username);
+        // System.out.println("Password: " + password);
+        // // ...use credentials...
+        // } catch (IOException e) {
+        // System.out.println("Credentials file not found or invalid.");
+        // }
 
         scanner.close();
     }
