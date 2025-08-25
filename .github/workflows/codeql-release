@@ -1,0 +1,21 @@
+ on:
+   release:
+     types: [ published ]
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest # Or other supported runner environments like windows-latest, macos-latest
+    permissions:
+      security-events: write # Required to upload SARIF results
+      actions: read # Required to download actions
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
